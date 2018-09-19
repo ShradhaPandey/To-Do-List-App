@@ -1,0 +1,51 @@
+<!--   
+when user enters a task and presses enter key, the task should be saved and displayed in list on page	
+for his we need to know when user clicks enter, we can do that using custom directives but for now, we will do it jusing conventional method.
+
+****
+local storage is a storage area in the browser, which is used to store data and lazer the data can be retrieved for our own sites etc
+****
+
+*******
+conventional method: monitor every key event, and look for key event 13 (13 is key code for enter key)
+task variable is  bind to the input box and can be used by controller.
+*******
+ul tag creates an unordered list
+ */ -->
+<!DOCTYPE html>
+<html> 
+<head>
+<meta charset="UTF-8">
+<title>AJS | To-Do List App  </title>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="todoController.js"></script>
+ <!--the style(done-true) will be used when a task is checked
+    the style (contenteditable="true") will be used when  the user edits a task 
+ -->
+<style>
+span.done-true {            
+color: gray;
+font-style: italic;
+text-decoration: line-through;
+}
+span[contenteditable="true"]{
+background: gray;
+padding: 3px;
+}
+</style>
+</head>
+<body ng-app="todoApp" ng-controller="todoCtrl">
+<h1 style="text-align:center;">Add a task</h1>
+<input ng-model="task" ng-keyup="searchEnter()" type="text" style="display:block; margin:0 auto; padding:5px;font-size:15px;width:300px  ;">
+<div id="tasksToShow">
+<ul>
+<li ng-repeat="oneTask in tasks track by $index">  <!-- track by index will solve the problem of duplicate values, which was created due to local storage -->
+<input type="checkbox" ng-model="oneTask.status">
+<span contenteditable="false" ng-dblclick="contentEdit(oneTask.taskMessage)" ng-keydown="enterAgain(oneTask.taskMessage)" ng-model="oneTask.taskMessage" class="done-{{oneTask.status}}">
+{{oneTask.taskMessage}}
+</span>
+</li>
+</ul>
+</div>
+</body>
+</html>
